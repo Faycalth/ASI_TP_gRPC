@@ -3,6 +3,7 @@ syntax = "proto3";
 package game;
 
 service GameService {
+  rpc GetInfoUser (Empty) returns (UserInfo) {}
   rpc GetCardList (Empty) returns (CardList) {}
   rpc GetUserList (Empty) returns (UserList) {}
   rpc BuyCard (IdCard) returns (CardBought) {}
@@ -19,6 +20,10 @@ message UserList {
 }
 
 message CardBought {
+  string message = 1;
+}
+
+message UserInfo {
   string message = 1;
 }
 

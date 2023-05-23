@@ -25,6 +25,10 @@ class GameServicer(game_pb2_grpc.GameServiceServicer):
         message = self.game_manager.sell_card(request.id)
         return game_pb2.CardSold(message=message)
 
+    def GetInfoUser(self, request, context):
+        message = self.game_manager.get_user_info()
+        return game_pb2.UserInfo(message=str(message))
+
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     game_pb2_grpc.add_GameServiceServicer_to_server(GameServicer(), server)

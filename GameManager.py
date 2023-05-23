@@ -12,18 +12,24 @@ class GameManager:
 
     def get_user_list(self):
         return self.user_manager.get_user_list()
+
+    def get_user_info(self):
+        user = self.user_manager.user_list[0]
+        return user
     
     def buy_card(self, card_id):
-        if card_id in self.card_manager.get_card_list():
-            return self.card_manager.buy_card(card_id)
+        if 0 <= int(card_id) < len(self.card_manager.get_card_list()):
+            return self.card_manager.buy_card(card_id, self.get_user_info().name)
         
     def sell_card(self, card_id):
-        if card_id in self.card_manager.get_card_list():
+        if 0 <= int(card_id) < len(self.card_manager.get_card_list()):
             return self.card_manager.sell_card(card_id)
   
 class UserManager:
     def __init__(self):
-        self.user_list = [User(i, "name_"+str(i), "connected") for i in range(5)]
+        self.user_list = []
+        for i in range(5):
+            self.user_list.append(User(i, "name_"+str(i), "connected"))    
     
     def get_user_list(self):
         ret = ""
@@ -50,11 +56,18 @@ class CardManager:
         for c in self.card_list:
             ret += str(c) + "\n"
         return ret
+    
+    def get_card_by_id(self, id):
+        for c in self.card_list:
+            if c.id == int(id):
+                return c 
 
-    def buy_card(self, card_id):
+    def buy_card(self, card_id, user_name):
+        self.get_card_by_id(card_id).owner = user_name
         return "Vous avez acheté la carte " + card_id
 
     def sell_card(self, card_id):
+        self.get_card_by_id(card_id).owner = None
         return "Vous avez vendu la carte " + card_id
 
 class Card:

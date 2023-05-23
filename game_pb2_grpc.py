@@ -14,6 +14,11 @@ class GameServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
+        self.GetInfoUser = channel.unary_unary(
+                '/game.GameService/GetInfoUser',
+                request_serializer=game__pb2.Empty.SerializeToString,
+                response_deserializer=game__pb2.UserInfo.FromString,
+                )
         self.GetCardList = channel.unary_unary(
                 '/game.GameService/GetCardList',
                 request_serializer=game__pb2.Empty.SerializeToString,
@@ -38,6 +43,12 @@ class GameServiceStub(object):
 
 class GameServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
+
+    def GetInfoUser(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def GetCardList(self, request, context):
         """Missing associated documentation comment in .proto file."""
@@ -66,6 +77,11 @@ class GameServiceServicer(object):
 
 def add_GameServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
+            'GetInfoUser': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetInfoUser,
+                    request_deserializer=game__pb2.Empty.FromString,
+                    response_serializer=game__pb2.UserInfo.SerializeToString,
+            ),
             'GetCardList': grpc.unary_unary_rpc_method_handler(
                     servicer.GetCardList,
                     request_deserializer=game__pb2.Empty.FromString,
@@ -95,6 +111,23 @@ def add_GameServiceServicer_to_server(servicer, server):
  # This class is part of an EXPERIMENTAL API.
 class GameService(object):
     """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def GetInfoUser(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/game.GameService/GetInfoUser',
+            game__pb2.Empty.SerializeToString,
+            game__pb2.UserInfo.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def GetCardList(request,
