@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package game;
+
+service GameService {
+  rpc GetCardList (Empty) returns (CardList) {}
+  rpc GetUserList (Empty) returns (UserList) {}
+  rpc BuyCard (IdCard) returns (CardBought) {}
+  rpc SellCard (IdCard) returns (CardSold) {}
+
+}
+
+message CardList {
+  string message = 1;
+}
+
+message UserList {
+  string message = 1;
+}
+
+message CardBought {
+  string message = 1;
+}
+
+message CardSold {
+  string message = 1;
+}
+
+message IdCard {
+  string id = 1;
+}
+
+message Empty {}
